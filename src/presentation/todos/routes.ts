@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { TodosController } from './controller';
-
+//* only the routes must be defined and their controller.
+//* no business logic to implement
 
 
 

@@ -27,7 +27,7 @@ export class Server {
     async start(){
 
         //* middlewares => a function to be executed when a request goes through it
-        // to parse the info that comes in the req.body and convert it to a json
+        // to parse the info that comes in the req.body and convert it to a json//raw
         this.app.use(express.json())
         //  to parse the info that comes in the req.body and convert it to x-www-form-urlencoded
         this.app.use(express.urlencoded({extended: true}));
