@@ -10,7 +10,7 @@ export class AppRoutes {
         const router = Router();
 
         //* middleware
-        router.use('/api/todos', TodosRoutes.routes)
+        router.use('/api/todos', TodosRoutes.routes);
         return router;
     }
 }
