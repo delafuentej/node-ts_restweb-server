@@ -124,7 +124,7 @@ export class TodosController {
 
         //  const deletedTodo = todos.splice(todoIndex, 1)[0];
 
-        res.json({message: `Todo with ID:${id} was successful eliminated`})
+        //res.json({message: `Todo with ID:${id} was successful eliminated`})
     }
 
 }
