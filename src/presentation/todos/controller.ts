@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../data/postgres";
 import { CreateTodoDto, UpdateTodoDto } from "../../domain/dtos";
+import { TodoRepository } from "../../domain";
 
 
 // const todos = [
@@ -10,14 +11,20 @@ import { CreateTodoDto, UpdateTodoDto } from "../../domain/dtos";
 // ]
 
 export class TodosController {
+
+
     //* no static methods => DI
     //* DI => inject repository to be able to use use cases
-
-    constructor(){}
+    constructor(
+        private readonly todoRepository: TodoRepository,
+    ){}
 
     public getTodos = async(req: Request, res: Response) => {
-        const todos = await prisma.todo.findMany();
+
+        const todos = await this.todoRepository.getAll();
+       
         return res.json(todos);
+       
     };
 
     public getTodoById = async(req: Request, res: Response) => {
@@ -26,13 +33,15 @@ export class TodosController {
        
         if(isNaN(id)) return res.status(400).json({error: 'ID argument is not a number'})
        // const todo = todos.find( todo => todo.id === id);
-        const todo = await prisma.todo.findFirst({
-            where: {id}
-        });
-
-       (todo) ? res.json(todo) : res.status(404).json(`Todo with ${id} does not exists`);
-       
+        try{
+            const todo = await this.todoRepository.findById(id);
+            return res.json(todo);
+        }catch(error){
+            res.status(400).json({error})
+          
+        }
     };
+
 
     public createTodo =  async(req: Request, res: Response) => {
        // const {text} = req.body;
@@ -43,14 +52,18 @@ export class TodosController {
 
       //  if(!text) return res.status(400).json({error: 'Text property is required' });
 
-       const newTodo = await prisma.todo.create({
-            data: createTodoDto!,
-        });
+      try{
 
-        res.json(newTodo);
+        const newTodo = await this.todoRepository.create(createTodoDto!)
 
+        console.log('newTodo', newTodo)
 
+        return res.json(newTodo);
+      }catch(error){
+        res.status(404).json({error})
+      }
 
+      
         // const newTodo = {
         //     id: todos.length + 1,
         //     text: text,
@@ -68,21 +81,18 @@ export class TodosController {
         });
         if(error) return res.status(400).json({error});
 
-            
-        const todo = await prisma.todo.findFirst({
-            where: {id}
-        });
+        try{
+            const updatedTodo = await this.todoRepository.updateById(updateTodoDto!);
+            return res.json(updatedTodo);
+
+        }catch(error){
+            res.send(400).json({error})
+        }
+
      //   const todo = todos.find( todo => todo.id === id);
-       if(!todo) return res.status(404).json({error: `Todo with ${id} does not exists`});
-
+        
        // const { text, completedAt } = req.body;
-
-        const updatedTodo = await prisma.todo.update({
-            where: {id},
-            data: updateTodoDto!.values,
-        });
-
-        res.json(updatedTodo);
+       
        // if(!text) return res.status(400).json({error: 'Text property is required' });
       /*
        todo.text = text || todo.text; 
@@ -106,16 +116,16 @@ export class TodosController {
         const id = Number(req.params.id);
         if(isNaN(id)) return res.status(400).json({error: 'ID argument is not a number'});
 
-        const todo = await prisma.todo.findFirst({
-            where: {id}
-        });
-        if(!todo) return res.status(404).json({error: `Todo with ${id} does not exists`});
+        try{
 
-        const deletedTodo = await prisma.todo.delete({
-            where: {id}
-        });
-        
-        (deletedTodo) ? res.json(deletedTodo) : res.status(400).json({error: `Todo with ID:${id} not eliminated`})
+            const deletedTodo = await this.todoRepository.deleteById(id);
+
+            return res.json(deletedTodo);
+
+        }catch(error){
+            res.status(400).json({error})
+        }
+       
 
         // const todoIndex = todos.findIndex( todo => todo.id === id);
         // if(todoIndex === -1 ) return res.status(404).json({error: `Todo with ${id} does not exists`});
