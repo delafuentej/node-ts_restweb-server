@@ -1,4 +1,5 @@
 import express, { Router } from 'express';
+import compression from 'compression';
 import path from 'path';
 
 
@@ -31,6 +32,9 @@ export class Server {
         this.app.use(express.json())
         //  to parse the info that comes in the req.body and convert it to x-www-form-urlencoded
         this.app.use(express.urlencoded({extended: true}));
+
+        //compression
+        this.app.use(compression())
 
         //* public folder
         this.app.use(express.static(this.publicPath));

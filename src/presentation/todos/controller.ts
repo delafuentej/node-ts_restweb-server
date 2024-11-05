@@ -8,9 +8,6 @@ import { TodoRepository } from "../../domain";
 
 export class TodosController {
 
-   
-
-
     //* no static methods => DI
     //* DI => inject repository to be able to use use cases
     constructor(
