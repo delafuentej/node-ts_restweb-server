@@ -56,7 +56,7 @@ export class TodosController {
         //     text: text,
         //     completedAt: null
         // }
-        //  todos.push(newTodo);
+        //   todos.push(newTodo);
        
     };
     public updateTodo = async(req: Request, res: Response) => {
