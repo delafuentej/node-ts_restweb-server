@@ -8,6 +8,7 @@ describe('Testing app.ts', ()=> {
     test('should call method server.start() with arguments', async()=>{
        
         await import('../src/app');
+       
 
         expect(Server).toHaveBeenCalledTimes(1);
         expect(Server).toHaveBeenCalledWith({

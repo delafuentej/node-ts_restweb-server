@@ -6,3 +6,4 @@ dist/
 prisma/
 
 .env
+.env.test
