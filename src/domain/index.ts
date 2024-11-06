@@ -5,3 +5,5 @@ export * from './repositories/todo.repository';
 
 // use-cases
 export * from './use-cases/';
+// custom errors
+export * from './errors/custom.error';

@@ -66,9 +66,9 @@ describe('routes.ts AppRoutes', ()=> {
 
         const {body}  = await request(testServer.app)
         .get(`/api/todos/${todoId}`)
-        .expect(400)
+        .expect(404)
 
-       expect(body).toEqual({ error: `Todo with Id:${todoId} not fount` });
+       expect(body).toEqual({ error: `Todo with Id:${todoId} not found` });
     });
 
     test('should return a new todo api/todos', async()=> {
@@ -136,10 +136,10 @@ describe('routes.ts AppRoutes', ()=> {
 
         const {body}  = await request(testServer.app)
         .put(`/api/todos/${todoId}`)
-        .expect(400)
+        .expect(404)
 
        
-       expect(body).toEqual({ error: `Todo with Id:${todoId} not fount` });
+       expect(body).toEqual({ error: `Todo with Id:${todoId} not found` });
     });
 
     test('should return an updated  todo -ONLY DATE- api/todos/:id ', async()=> {
@@ -205,10 +205,10 @@ describe('routes.ts AppRoutes', ()=> {
 
         const {body}  = await request(testServer.app)
         .delete(`/api/todos/${todoId}`)
-        .expect(400)
+        .expect(404)
 
        
-        expect(body).toEqual({ error: `Todo with Id:${todoId} not fount` });
+        expect(body).toEqual({ error: `Todo with Id:${todoId} not found` });
 
     });
 
