@@ -6,14 +6,9 @@ import { CreateTodoDto, UpdateTodoDto } from '../../../src/domain/dtos';
 
 describe('todo.datasource.ts: testing TodoDatasource', ()=> {
 
-    const newTodo =  TodoEntity.fromObject(
-        {
-            id:100,
-            text:'testing',
-            completedAt: null
-        }
-    )
+    const newTodo =  new TodoEntity(1, 'testing');
 
+   
     class MockTodoDatasource implements TodoDatasource{
 
         async getAll(): Promise<TodoEntity[]>{

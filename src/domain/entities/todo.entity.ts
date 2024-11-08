@@ -1,33 +1,34 @@
-
-
 export class TodoEntity {
     constructor(
         public id: number,
         public text: string,
-        public completedAt?: Date | null,
-    ){};
+        public completedAt: Date | null = null,  // Default to null if not provided
+    ) {}
 
-    get isCompleted(){
+    get isCompleted(): boolean {
         return !!this.completedAt;
     }
 
-    // method fromObject() =< to be able to create a instance from object
-    // to create a entity
-    public static fromObject(object : {[key: string]: any}): TodoEntity{
-        const {id, text, completedAt} = object;
-        if(!id) throw 'Id is required';
-        if(!text) throw 'Text is required';
+    /**
+     * Crea una instancia de TodoEntity a partir de un objeto
+     * @param object - Un objeto que contiene las propiedades necesarias para crear un TodoEntity
+     * @returns Una nueva instancia de TodoEntity
+     * @throws Error si faltan 'id' o 'text' o si 'completedAt' no es una fecha válida
+     */
+    public static fromObject(object: { [key: string]: any }): TodoEntity {
+        const { id, text, completedAt } = object;
+        
+        if (!id) throw new Error('Id is required');
+        if (!text) throw new Error('Text is required');
 
-        let newCompletedAt;
-        if(completedAt){
-            newCompletedAt = new Date( completedAt );
-            if(isNaN(newCompletedAt.getTime())){
-                throw 'CompletedAt is not a valid Date';
+        let parsedCompletedAt = null;
+        if (completedAt) {
+            parsedCompletedAt = new Date(completedAt);
+            if (isNaN(parsedCompletedAt.getTime())) {
+                throw new Error('CompletedAt is not a valid Date');
             }
         }
 
-        return new TodoEntity(id, text, completedAt);
-
-
+        return new TodoEntity(id, text, parsedCompletedAt);
     }
 }
